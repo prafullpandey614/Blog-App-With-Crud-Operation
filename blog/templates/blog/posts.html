@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Max's Blog App
+{% endblock title %}
+{% block style_block %}
+
+<link rel="stylesheet" href="{% static "blog/post.css"%}">
+<link rel="stylesheet" href="{% static "blog/all-posts.css"%}">
+{% endblock style_block %}
+
+
+{% block content %}
+<section id="all-posts">
+    <h2>My Collected Posts</h2>
+    <ul>
+    
+            {% for post in posts %}
+            {% include "blog/includes/post.html" %}
+            {% endfor %}
+            
+            
+      
+    </ul>
+</section>
+{% endblock %}

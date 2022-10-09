@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Prafull's Blog App
+{% endblock title %}
+{% block style_block %}
+<link rel="stylesheet" href="{% static "blog/index.css"%}">
+<link rel="stylesheet" href="{% static "blog/post.css"%}">
+{% comment %} <link rel="stylesheet" href="{% static "blog/base.css"%}"> {% endcomment %}
+{% endblock style_block %}
+
+{% block content %}
+
+<section id="welcome">
+
+  <header>
+    <img src="https://media-exp1.licdn.com/dms/image/C4D03AQER8QSV4hf5qA/profile-displayphoto-shrink_400_400/0/1659125352767?e=1668038400&v=beta&t=5ZDf0rSfB8BTcw9mNDkXRNuOkC1g2sUOQc3sk4Pil8o" alt="Max - The guruji">
+    <h2>Prafull's Blog</h2>
+  </header>
+  <p>Hi I am Prafull and I love to blog about tech and the Beautyful world ! </p>
+
+</section>
+<section id="latest-posts">
+  <h2>My Latest Thoughts</h2>
+  <ul>
+    {% for post in posts %}
+    {% include "blog/includes/post.html" %}
+    {% endfor %}
+  
+    
+  </ul>
+</section>
+<section id="about">
+  <h2>What I do ?</h2>
+  <p>I Love Programming and help to others by teaching and exploring new Technologies!</p>
+  <p>My Goal is to grow as a developer - and If I could help you  do the same I would be very happy</p>
+</section>
+{% endblock content %}

@@ -1,0 +1,17 @@
+{
+    "git.ignoreLimitWarning": true,
+    "emmet.includeLanguages": {"django-html":"html"},
+    "configurations": [
+        {
+          "name": "Extension",
+          "type": "extensionHost",
+          "request": "launch",
+          "runtimeExecutable": "${execPath}",
+          "args": [
+            "--extensionDevelopmentPath=${workspaceFolder}"
+          ]
+        }
+    ]
+
+    
+}
