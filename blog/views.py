@@ -1,3 +1,5 @@
+from ast import Not
+from re import template
 from django.shortcuts import render ,get_object_or_404
 from django.views.generic import ListView ,  DetailView
 from django.views import View
@@ -48,7 +50,13 @@ class AllPostsView(ListView):
 class SinglePostView(View):
     template_name = "blog/post-detail.html"
     model = Blog
-    
+    def is_stored_post(self,request,post_id):
+        all_post = request.session.get("stored_posts")
+        if all_post is not None:
+            is_saved_post= post_id in all_post
+        else:
+            is_saved_post  =False
+        return is_saved_post
     def get(self, request , slug): # here we can accept anything as parameter which comes through url
         post = Blog.objects.get(slug = slug)
         comments = post.comments.all()
@@ -56,7 +64,8 @@ class SinglePostView(View):
             "post": post,
             "tags": post.tags.all(),
             "comment_form" : CommentForm(),
-            "comments": comments.order_by("-id")
+            "comments": comments.order_by("-id"),
+            "saved_for_later": self.is_stored_post(request, post.id)
         }
         return render(request, 'blog/post-detail.html', context)
     def post(self, request,slug):
@@ -75,6 +84,7 @@ class SinglePostView(View):
             "tags": post.tags.all(),
             "comment_form" : CommentForm(request.POST),
             "comments" : post.comments.all().order_by("-id"),
+            "saved_for_later": self.is_stored_post(request, post.id)
         }
         return render(request, 'blog/post-detail.html', context)
     
@@ -87,7 +97,33 @@ class SinglePostView(View):
         context["comment_form"] = CommentForm()
         return context
     
+class ReadlaterView(View):
+    # template = "blog/stored-posts.html"
     
+    def get(self,request):
+        posts = request.session.get("stored_posts")
+        context = {}
+        if posts is None or len(posts) == 0:
+            context["stored_posts"] = []
+            context["has_posts"] = False
+        else:
+            posts = Blog.objects.filter(id__in=posts)
+            context["stored_posts"] = posts
+            context["has_posts"] = True
+        return render(request,'blog/stored-posts.html',context)
+    def post(self,request):
+        read_later_posts = request.session.get("stored_posts")
+        if read_later_posts is None:
+            read_later_posts = []
+        post_id = int(request.POST['post_name'])
+        if post_id  not in read_later_posts:
+            read_later_posts.append(int(request.POST['post_name']))
+            
+        else :
+            read_later_posts.remove(post_id)
+        request.session['stored_posts'] = read_later_posts    
+        return HttpResponseRedirect("/")
+            
 # def post_detail(request,slug):
 #     # identified_post = Blog.objects.get(slug=slug) I commented it because it might get error so we have another good django alternative
 #     identified_post = get_object_or_404(Blog,slug=slug)
