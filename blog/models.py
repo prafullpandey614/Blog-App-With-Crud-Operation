@@ -34,5 +34,13 @@ class Blog(models.Model):
     slug = models.SlugField(unique=True , db_index=True)
     author = models.ForeignKey(Author, related_name='blogs', on_delete= models.SET_NULL , null=True)
     tags = models.ManyToManyField(Tags)
+    def __str__(self):
+        return f"{self.title}"
     
-        
+class Comments(models.Model):
+    user_name = models.CharField(max_length = 100)
+    email = models.EmailField()
+    comment = models.TextField(max_length =300)
+    post = models.ForeignKey(Blog , on_delete=models.CASCADE, related_name="comments")
+    def __str__(self) :
+        return f"{self.user_name} - {self.comment}"

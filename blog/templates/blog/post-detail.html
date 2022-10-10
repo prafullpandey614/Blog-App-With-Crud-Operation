@@ -5,6 +5,14 @@
 <link rel="stylesheet" href="{% static "blog/post-detail.css" %}">
 {% endblock style_block %}
 {% block content %}
+{% if comment_form.errors %}
+
+<div id="alert">
+    <h2>Something Went Wrong</h2>
+    <p>Please Check the Form</p>
+    <a href="#comment-form">Fix Here!</a>
+</div>
+{% endif %}
 <section id="summary">
     <h2>
         {{post.title}}
@@ -16,6 +24,9 @@
         </span>
      
         {% endfor %}
+      </div>
+      <div>
+          <button>Read Later</button>
       </div>
        
    
@@ -31,13 +42,43 @@
 </section>
 <main>
     {{post.content|linebreaks}}
-    <form action="" method="POST">
-        <label for="comment">Add a Comment</label>
-    <input type="text" name="comment">
-    <button type='submit'>Add Comment</button>
-
-    </form>
     
 </main>
+
+<section id="comments">
+<ul>
+    {% for cmt in comments %}
+    <li>
+        <h2>{{cmt.user_name}}</h2>
+        <p>{{cmt.comment|linebreaks}}</p>
+        
+    </li>
+   
+    
+    {% endfor %}
+</ul>
+
+</section>
+  
+    <section id="comment-form">
+        <h2>Your Comment</h2>
+        <form action="{% url "post-detail-page" post.slug %}" method="POST">
+            {% csrf_token %}
+           {% for form_field in comment_form %}
+           <div class="form-control  {% if form_field.errors %} invalid {% endif %}">
+            {{form_field.label_tag}}
+            {{form_field}}
+            {{form_field.errors}}
+           </div>
+         
+           {% endfor %}
+
+           <button>Save Comment</button>
+        </form>
+
+    </section>
+    
+    
+
       
         {% endblock content %}
