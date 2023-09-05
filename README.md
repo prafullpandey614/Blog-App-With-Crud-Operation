@@ -1,6 +1,6 @@
 # Blog-App-With-Crud-Operation
 
-How this Looks  ?
+ A few glimpse?
 
 <img width="944" alt="09 10 2022_15 36 28_REC" src="https://user-images.githubusercontent.com/81959129/194750773-aea8bc0e-d27b-4a3e-b28a-ce3fe5280c03.png">
 <img width="941" alt="09 10 2022_15 36 51_REC" src="https://user-images.githubusercontent.com/81959129/194750778-25958929-b695-48c5-a907-2f35208afd13.png">
